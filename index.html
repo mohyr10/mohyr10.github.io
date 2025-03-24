@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Quiz Battle Pro</title>
+    <style>
+        :root {
+            --neon-pink: #ff2a6d;
+            --neon-blue: #05d9e8;
+            --neon-purple: #d300c5;
+            --neon-green: #00ff9d;
+            --neon-yellow: #f9f002;
+            --dark-bg: #0d0221;
+            --darker-bg: #050110;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Orbitron', 'Arial', sans-serif;
+            background-color: var(--dark-bg);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 42, 109, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 30%, rgba(5, 217, 232, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 50% 80%, rgba(211, 0, 197, 0.1) 0%, transparent 30%);
+            overflow-x: hidden;
+        }
+        
+        @font-face {
+            font-family: 'Orbitron';
+            src: url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 3rem;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+            animation: pulse 2s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+            100% { text-shadow: 0 0 15px var(--neon-blue), 0 0 30px var(--neon-blue), 0 0 45px var(--neon-blue); }
+        }
+        
+        .game-area {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+        }
+        
+        .quiz-section {
+            background-color: rgba(13, 2, 33, 0.8);
+            border: 1px solid var(--neon-purple);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(211, 0, 197, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quiz-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 15px;
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-purple), var(--neon-blue));
+            z-index: -1;
+            animation: borderRotate 8s linear infinite;
+        }
+        
+        @keyframes borderRotate {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+        
+        .players-section {
+            background-color: rgba(13, 2, 33, 0.8);
+            border: 1px solid var(--neon-green);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+        }
+        
+        .question {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            line-height: 1.4;
+            color: var(--neon-yellow);
+            text-shadow: 0 0 5px var(--neon-yellow);
+        }
+        
+        .question-history {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .option {
+            padding: 15px;
+            background-color: transparent;
+            color: white;
+            border: 1px solid var(--neon-blue);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option:hover {
+            background-color: rgba(5, 217, 232, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+        
+        .option.correct {
+            background-color: rgba(0, 255, 157, 0.2);
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+        
+        .option.incorrect {
+            background-color: rgba(255, 42, 109, 0.2);
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+            box-shadow: 0 0 15px var(--neon-pink);
+        }
+        
+        .feedback {
+            margin: 20px 0;
+            font-size: 1.3rem;
+            min-height: 30px;
+            text-align: center;
+        }
+        
+        .feedback.correct {
+            color: var(--neon-green);
+            text-shadow: 0 0 5px var(--neon-green);
+        }
+        
+        .feedback.incorrect {
+            color: var(--neon-pink);
+            text-shadow: 0 0 5px var(--neon-pink);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            background-color: transparent;
+            border: 1px solid;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        .next-btn {
+            border-color: var(--neon-blue);
+            color: var(--neon-blue);
+        }
+        
+        .next-btn:hover {
+            background-color: rgba(5, 217, 232, 0.1);
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+        
+        .restart-btn {
+            border-color: var(--neon-purple);
+            color: var(--neon-purple);
+        }
+        
+        .restart-btn:hover {
+            background-color: rgba(211, 0, 197, 0.1);
+            box-shadow: 0 0 15px var(--neon-purple);
+        }
+        
+        .add-question-btn {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            margin-top: 30px;
+            width: 100%;
+        }
+        
+        .add-question-btn:hover {
+            background-color: rgba(0, 255, 157, 0.1);
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+        
+        .add-question-form {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(5, 1, 16, 0.7);
+            border-radius: 10px;
+            border: 1px solid var(--neon-yellow);
+            box-shadow: 0 0 15px rgba(249, 240, 2, 0.3);
+        }
+        
+        .add-question-form h3 {
+            color: var(--neon-yellow);
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        
+        .add-question-form input,
+        .add-question-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 5px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .add-question-form textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .submit-question {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            width: 100%;
+        }
+        
+        .submit-question:hover {
+            background-color: rgba(0, 255, 157, 0.1);
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+        
+        .password-form {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(5, 1, 16, 0.7);
+            border-radius: 10px;
+            border: 1px solid var(--neon-pink);
+            box-shadow: 0 0 15px rgba(255, 42, 109, 0.3);
+        }
+        
+        .password-form h3 {
+            color: var(--neon-pink);
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        
+        .password-form input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--neon-pink);
+            border-radius: 5px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .password-submit {
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+            width: 100%;
+        }
+        
+        .password-submit:hover {
+            background-color: rgba(255, 42, 109, 0.1);
+            box-shadow: 0 0 15px var(--neon-pink);
+        }
+        
+        .progress-container {
+            margin-bottom: 30px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--neon-blue);
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-purple));
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .progress-text {
+            text-align: right;
+            margin-top: 5px;
+            color: var(--neon-blue);
+            font-size: 0.9rem;
+        }
+        
+        .players-title {
+            color: var(--neon-green);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            text-shadow: 0 0 5px var(--neon-green);
+        }
+        
+        .player-list {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .player {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .player:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px;
+        }
+        
+        .player-1 {
+            border-color: var(--neon-pink);
+        }
+        
+        .player-1:hover {
+            box-shadow: 0 0 15px var(--neon-pink);
+        }
+        
+        .player-2 {
+            border-color: var(--neon-blue);
+        }
+        
+        .player-2:hover {
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+        
+        .player-3 {
+            border-color: var(--neon-green);
+        }
+        
+        .player-3:hover {
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+        
+        .player-4 {
+            border-color: var(--neon-yellow);
+        }
+        
+        .player-4:hover {
+            box-shadow: 0 0 15px var(--neon-yellow);
+        }
+        
+        .player-name {
+            font-weight: bold;
+        }
+        
+        .player-score {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .player-1 .player-name {
+            color: var(--neon-pink);
+        }
+        
+        .player-2 .player-name {
+            color: var(--neon-blue);
+        }
+        
+        .player-3 .player-name {
+            color: var(--neon-green);
+        }
+        
+        .player-4 .player-name {
+            color: var(--neon-yellow);
+        }
+        
+        .player-history {
+            position: absolute;
+            bottom: -10px;
+            left: 15px;
+            right: 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.7);
+            display: none;
+            z-index: 10;
+        }
+        
+        .player:hover .player-history {
+            display: block;
+        }
+        
+        .setup-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--darker-bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            padding: 30px;
+        }
+        
+        .setup-container {
+            max-width: 600px;
+            width: 100%;
+            background-color: rgba(13, 2, 33, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid var(--neon-purple);
+            box-shadow: 0 0 30px rgba(211, 0, 197, 0.5);
+        }
+        
+        .setup-title {
+            color: var(--neon-blue);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .player-inputs {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .player-input {
+            display: flex;
+            align-items: center;
+        }
+        
+        .player-input label {
+            width: 100px;
+            color: var(--neon-yellow);
+            font-size: 1.1rem;
+        }
+        
+        .player-input input {
+            flex: 1;
+            padding: 12px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 5px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .start-game-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: transparent;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            font-size: 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+        
+        .start-game-btn:hover {
+            background-color: rgba(0, 255, 157, 0.1);
+            box-shadow: 0 0 20px var(--neon-green);
+        }
+        
+        .current-player-indicator {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: var(--neon-pink);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            box-shadow: 0 0 10px var(--neon-pink);
+            animation: pulse 1.5s infinite alternate;
+        }
+        
+        @media (max-width: 768px) {
+            .game-area {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .question {
+                font-size: 1.4rem;
+            }
+            
+            .setup-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="setup-screen" id="setup-screen">
+        <div class="setup-container">
+            <h2 class="setup-title">Neon Quiz Battle Pro</h2>
+            <div class="player-inputs">
+                <div class="player-input">
+                    <label for="player1">Player 1:</label>
+                    <input type="text" id="player1" placeholder="Enter name" required>
+                </div>
+                <div class="player-input">
+                    <label for="player2">Player 2:</label>
+                    <input type="text" id="player2" placeholder="Enter name (optional)">
+                </div>
+                <div class="player-input">
+                    <label for="player3">Player 3:</label>
+                    <input type="text" id="player3" placeholder="Enter name (optional)">
+                </div>
+                <div class="player-input">
+                    <label for="player4">Player 4:</label>
+                    <input type="text" id="player4" placeholder="Enter name (optional)">
+                </div>
+            </div>
+            <button class="start-game-btn" id="start-game-btn">Start Battle</button>
+        </div>
+    </div>
+
+    <div class="container" id="game-container" style="display: none;">
+        <h1>Neon Quiz Battle Pro</h1>
+        
+        <div class="game-area">
+            <div class="quiz-section">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress" id="progress"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text">Question 1 of 100</div>
+                </div>
+                
+                <div class="question" id="question"></div>
+                <div class="question-history" id="question-history"></div>
+                <div class="options" id="options"></div>
+                <div class="feedback" id="feedback"></div>
+                
+                <div class="controls">
+                    <button class="next-btn" id="next-btn" disabled>Next Question</button>
+                    <button class="restart-btn" id="restart-btn">Restart Battle</button>
+                </div>
+                
+                <button class="add-question-btn" id="add-question-btn">Add New Question</button>
+                
+                <div class="password-form" id="password-form">
+                    <h3>Enter Admin Password</h3>
+                    <input type="password" id="password-input" placeholder="Enter password">
+                    <button class="password-submit" id="password-submit">Submit</button>
+                </div>
+                
+                <div class="add-question-form" id="add-question-form">
+                    <h3>Add New Question</h3>
+                    <textarea id="new-question" placeholder="Enter your question"></textarea>
+                    <input type="text" id="option1" placeholder="Option 1 (correct answer)">
+                    <input type="text" id="option2" placeholder="Option 2">
+                    <input type="text" id="option3" placeholder="Option 3">
+                    <button class="submit-question" id="submit-question">Add Question</button>
+                </div>
+            </div>
+            
+            <div class="players-section">
+                <h3 class="players-title">Players</h3>
+                <div class="player-list" id="player-list">
+                    <!-- Players will be added here dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Quiz questions
+        const questions = [
+            {
+                question: "What is the capital of France?",
+                options: ["London", "Paris", "Berlin"],
+                answer: "Paris"
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                options: ["Venus", "Mars", "Jupiter"],
+                answer: "Mars"
+            },
+            {
+                question: "What is the largest mammal in the world?",
+                options: ["Elephant", "Blue Whale", "Giraffe"],
+                answer: "Blue Whale"
+            },
+            {
+                question: "In which year did World War II end?",
+                options: ["1943", "1945", "1947"],
+                answer: "1945"
+            },
+            {
+                question: "What is the chemical symbol for gold?",
+                options: ["Go", "Gd", "Au"],
+                answer: "Au"
+            },
+            // Add more questions here...
+        ];
+
+        // Game variables
+        let currentQuestionIndex = 0;
+        let players = [];
+        let currentPlayerIndex = 0;
+        let quizEnded = false;
+        const ADMIN_PASSWORD = "Bayazan";
+        let questionHistory = {}; // Track which player answered which question
+
+        // DOM elements
+        const setupScreen = document.getElementById('setup-screen');
+        const gameContainer = document.getElementById('game-container');
+        const questionElement = document.getElementById('question');
+        const questionHistoryElement = document.getElementById('question-history');
+        const optionsElement = document.getElementById('options');
+        const feedbackElement = document.getElementById('feedback');
+        const nextButton = document.getElementById('next-btn');
+        const restartButton = document.getElementById('restart-btn');
+        const addQuestionButton = document.getElementById('add-question-btn');
+        const addQuestionForm = document.getElementById('add-question-form');
+        const passwordForm = document.getElementById('password-form');
+        const passwordInput = document.getElementById('password-input');
+        const passwordSubmit = document.getElementById('password-submit');
+        const submitQuestionButton = document.getElementById('submit-question');
+        const progressBar = document.getElementById('progress');
+        const progressText = document.getElementById('progress-text');
+        const playerListElement = document.getElementById('player-list');
+        const startGameButton = document.getElementById('start-game-btn');
+
+        // Initialize the quiz
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            quizEnded = false;
+            questionHistory = {};
+            
+            // Reset player scores
+            players.forEach(player => {
+                player.score = 0;
+                player.answeredQuestions = [];
+            });
+            
+            currentPlayerIndex = 0;
+            updatePlayerDisplay();
+            showQuestion();
+        }
+
+        // Display current question
+        function showQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                endQuiz();
+                return;
+            }
+
+            // Update progress bar
+            const progress = ((currentQuestionIndex) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+
+            const currentQuestion = questions[currentQuestionIndex];
+            questionElement.textContent = currentQuestion.question;
+            
+            // Show question history if available
+            if (questionHistory[currentQuestionIndex]) {
+                const player = players.find(p => p.id === questionHistory[currentQuestionIndex].playerId);
+                questionHistoryElement.textContent = `Previously answered by ${player.name} (${questionHistory[currentQuestionIndex].correct ? 'Correct' : 'Incorrect'})`;
+            } else {
+                questionHistoryElement.textContent = '';
+            }
+            
+            optionsElement.innerHTML = '';
+
+            // Shuffle options to randomize their order
+            const shuffledOptions = [...currentQuestion.options].sort(() => Math.random() - 0.5);
+
+            shuffledOptions.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.classList.add('option');
+                button.addEventListener('click', () => selectAnswer(option));
+                optionsElement.appendChild(button);
+            });
+
+            feedbackElement.textContent = '';
+            feedbackElement.className = 'feedback';
+            nextButton.disabled = true;
+        }
+
+        // Handle answer selection
+        function selectAnswer(selectedOption) {
+            const currentQuestion = questions[currentQuestionIndex];
+            const isCorrect = selectedOption === currentQuestion.answer;
+
+            // Disable all options after selection
+            const optionButtons = document.querySelectorAll('.option');
+            optionButtons.forEach(button => {
+                button.disabled = true;
+                if (button.textContent === currentQuestion.answer) {
+                    button.classList.add('correct');
+                } else if (button.textContent === selectedOption && !isCorrect) {
+                    button.classList.add('incorrect');
+                }
+            });
+
+            // Record question history
+            questionHistory[currentQuestionIndex] = {
+                playerId: players[currentPlayerIndex].id,
+                correct: isCorrect,
+                selectedAnswer: selectedOption
+            };
+            
+            // Update player's answered questions
+            players[currentPlayerIndex].answeredQuestions.push({
+                questionIndex: currentQuestionIndex,
+                correct: isCorrect
+            });
+
+            // Update score and feedback
+            if (isCorrect) {
+                players[currentPlayerIndex].score++;
+                updatePlayerDisplay();
+                feedbackElement.textContent = 'Correct!';
+                feedbackElement.className = 'feedback correct';
+            } else {
+                feedbackElement.textContent = `Incorrect! The correct answer is ${currentQuestion.answer}.`;
+                feedbackElement.className = 'feedback incorrect';
+            }
+
+            nextButton.disabled = false;
+        }
+
+        // Move to next question and player
+        function nextQuestion() {
+            currentQuestionIndex++;
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+            updatePlayerDisplay();
+            showQuestion();
+        }
+
+        // End the quiz
+        function endQuiz() {
+            quizEnded = true;
+            
+            // Determine winner(s)
+            let maxScore = Math.max(...players.map(p => p.score));
+            let winners = players.filter(p => p.score === maxScore);
+            
+            let winnerText;
+            if (winners.length === 1) {
+                winnerText = `${winners[0].name} wins with ${winners[0].score} points!`;
+            } else {
+                winnerText = `Tie between ${winners.map(w => w.name).join(' and ')} with ${maxScore} points each!`;
+            }
+            
+            questionElement.textContent = `Battle Complete! ${winnerText}`;
+            optionsElement.innerHTML = '';
+            feedbackElement.textContent = '';
+            questionHistoryElement.textContent = '';
+            nextButton.disabled = true;
+            progressBar.style.width = '100%';
+        }
+
+        // Add new question
+        function addNewQuestion() {
+            const newQuestion = document.getElementById('new-question').value.trim();
+            const option1 = document.getElementById('option1').value.trim();
+            const option2 = document.getElementById('option2').value.trim();
+            const option3 = document.getElementById('option3').value.trim();
+
+            if (newQuestion && option1 && option2 && option3) {
+                questions.push({
+                    question: newQuestion,
+                    options: [option1, option2, option3],
+                    answer: option1
+                });
+
+                // Clear form
+                document.getElementById('new-question').value = '';
+                document.getElementById('option1').value = '';
+                document.getElementById('option2').value = '';
+                document.getElementById('option3').value = '';
+
+                // Hide form
+                addQuestionForm.style.display = 'none';
+
+                // Show confirmation with neon effect
+                const originalText = addQuestionButton.textContent;
+                addQuestionButton.textContent = 'Question Added!';
+                addQuestionButton.style.boxShadow = '0 0 20px var(--neon-green)';
+                setTimeout(() => {
+                    addQuestionButton.textContent = originalText;
+                    addQuestionButton.style.boxShadow = '';
+                }, 2000);
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+        // Update player display
+        function updatePlayerDisplay() {
+            playerListElement.innerHTML = '';
+            
+            players.forEach((player, index) => {
+                const playerElement = document.createElement('div');
+                playerElement.className = `player player-${index + 1}`;
+                
+                if (index === currentPlayerIndex) {
+                    const indicator = document.createElement('div');
+                    indicator.className = 'current-player-indicator';
+                    indicator.textContent = '✓';
+                    playerElement.appendChild(indicator);
+                }
+                
+                const nameElement = document.createElement('div');
+                nameElement.className = 'player-name';
+                nameElement.textContent = player.name;
+                
+                const scoreElement = document.createElement('div');
+                scoreElement.className = 'player-score';
+                scoreElement.textContent = player.score;
+                
+                // Add history element
+                const historyElement = document.createElement('div');
+                historyElement.className = 'player-history';
+                
+                // Calculate stats
+                const totalAnswered = player.answeredQuestions.length;
+                const correctAnswers = player.answeredQuestions.filter(q => q.correct).length;
+                const accuracy = totalAnswered > 0 ? Math.round((correctAnswers / totalAnswered) * 100) : 0;
+                
+                historyElement.textContent = `Answered: ${totalAnswered} | Correct: ${correctAnswers} (${accuracy}%)`;
+                
+                playerElement.appendChild(nameElement);
+                playerElement.appendChild(scoreElement);
+                playerElement.appendChild(historyElement);
+                playerListElement.appendChild(playerElement);
+            });
+        }
+
+        // Show password form
+        function showPasswordForm() {
+            addQuestionForm.style.display = 'none';
+            passwordForm.style.display = 'block';
+        }
+
+        // Verify password
+        function verifyPassword() {
+            if (passwordInput.value === ADMIN_PASSWORD) {
+                passwordForm.style.display = 'none';
+                addQuestionForm.style.display = 'block';
+                passwordInput.value = '';
+            } else {
+                alert('Incorrect password!');
+                passwordInput.value = '';
+            }
+        }
+
+        // Event listeners
+        nextButton.addEventListener('click', nextQuestion);
+        restartButton.addEventListener('click', startQuiz);
+        addQuestionButton.addEventListener('click', showPasswordForm);
+        passwordSubmit.addEventListener('click', verifyPassword);
+        submitQuestionButton.addEventListener('click', addNewQuestion);
+        
+        // Allow pressing Enter in password field
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                verifyPassword();
+            }
+        });
+        
+        startGameButton.addEventListener('click', () => {
+            // Get player names
+            const player1 = document.getElementById('player1').value.trim();
+            const player2 = document.getElementById('player2').value.trim();
+            const player3 = document.getElementById('player3').value.trim();
+            const player4 = document.getElementById('player4').value.trim();
+            
+            if (!player1) {
+                alert('Please enter at least one player name');
+                return;
+            }
+            
+            // Create players array with unique IDs
+            players = [];
+            if (player1) players.push({ 
+                name: player1, 
+                score: 0, 
+                id: 'p1', 
+                answeredQuestions: [] 
+            });
+            if (player2) players.push({ 
+                name: player2, 
+                score: 0, 
+                id: 'p2', 
+                answeredQuestions: [] 
+            });
+            if (player3) players.push({ 
+                name: player3, 
+                score: 0, 
+                id: 'p3', 
+                answeredQuestions: [] 
+            });
+            if (player4) players.push({ 
+                name: player4, 
+                score: 0, 
+                id: 'p4', 
+                answeredQuestions: [] 
+            });
+            
+            // Hide setup screen and show game
+            setupScreen.style.display = 'none';
+            gameContainer.style.display = 'block';
+            
+            // Start the quiz
+            startQuiz();
+        });
+
+        // Initialize with setup screen
+        setupScreen.style.display = 'flex';
+        gameContainer.style.display = 'none';
+    </script>
+</body>
+</html>
