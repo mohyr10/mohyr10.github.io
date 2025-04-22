@@ -1,486 +1,1227 @@
 <!DOCTYPE html>
-<html lang="no">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mohammad Yazan Alrawi - CV</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Cyber Terminal Dojo</title>
     <style>
+        /* CSS Styles */
         :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --light: #f8f9fa;
-            --dark: #343a40;
-            --accent: #e74c3c;
-            --text: #495057;
+            --terminal-bg: #0a0a12;
+            --terminal-text: #00ff00;
+            --terminal-header: #00aa00;
+            --terminal-border: #005500;
+            --terminal-cursor: #00ff00;
+            --terminal-prompt: #55ff55;
+            --terminal-highlight: #ffff00;
+            --terminal-error: #ff5555;
+            --terminal-success: #55ff55;
+            --terminal-info: #5555ff;
+            --terminal-warning: #ffaa00;
+            --glow-color: rgba(0, 255, 0, 0.7);
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-family: 'Courier New', monospace;
         }
         
         body {
-            background-color: white;
-            color: var(--text);
+            background-color: #000;
+            color: var(--terminal-text);
             line-height: 1.5;
-            font-size: 14px;
-            padding: 10px;
-        }
-        
-        .cv-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-        }
-        
-        header {
-            background: var(--primary);
-            color: white;
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(0, 80, 0, 0.15) 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, rgba(0, 120, 0, 0.15) 0%, transparent 25%);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
         
-        h1 {
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-        
-        .contact-info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            font-size: 12px;
-        }
-        
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .contact-item i {
-            font-size: 12px;
-        }
-        
-        .main-content {
-            display: flex;
-            flex-wrap: wrap;
-        }
-        
-        .left-column {
-            flex: 1;
-            min-width: 250px;
-            padding: 15px;
-            background: var(--light);
-        }
-        
-        .right-column {
-            flex: 2;
-            min-width: 300px;
-            padding: 15px;
-        }
-        
-        section {
-            margin-bottom: 15px;
-        }
-        
-        h2 {
-            color: var(--primary);
-            font-size: 16px;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            border-bottom: 2px solid var(--secondary);
-        }
-        
-        .profile-text {
-            font-size: 13px;
-            text-align: justify;
-        }
-        
-        .timeline-item {
-            margin-bottom: 12px;
-        }
-        
-        .timeline-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 3px;
-        }
-        
-        .timeline-date {
-            font-weight: bold;
-            color: var(--dark);
-            font-size: 12px;
-        }
-        
-        .timeline-title {
-            font-weight: bold;
-            font-size: 13px;
-        }
-        
-        .timeline-subtitle {
-            font-style: italic;
-            color: #6c757d;
-            font-size: 12px;
-            margin-bottom: 5px;
-        }
-        
-        .timeline-description {
-            font-size: 12px;
-            padding-left: 10px;
-        }
-        
-        .timeline-description ul {
-            padding-left: 15px;
-        }
-        
-        .timeline-description li {
-            margin-bottom: 3px;
-        }
-        
-        .skills-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        
-        .skill-item {
-            margin-bottom: 8px;
-        }
-        
-        .skill-name {
-            font-size: 12px;
-            margin-bottom: 3px;
-        }
-        
-        .skill-bar {
-            height: 6px;
-            background: #e9ecef;
-            border-radius: 3px;
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--terminal-bg);
+            border-radius: 0;
+            padding: 0;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.2);
+            border: 1px solid var(--terminal-border);
+            position: relative;
             overflow: hidden;
         }
         
-        .skill-progress {
-            height: 100%;
-            background: var(--secondary);
-            border-radius: 3px;
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glow-color), transparent);
+            box-shadow: 0 0 10px var(--glow-color);
+            animation: scanline 8s linear infinite;
         }
         
-        .languages {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        @keyframes scanline {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 0;
+            padding: 20px;
+            border-bottom: 1px solid var(--terminal-border);
+            background-color: rgba(0, 20, 0, 0.3);
+            position: relative;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glow-color), transparent);
+            box-shadow: 0 0 10px var(--glow-color);
+        }
+        
+        h1 {
+            color: var(--terminal-text);
+            margin-bottom: 5px;
+            font-size: 2.2rem;
+            text-shadow: 0 0 5px var(--glow-color);
+            letter-spacing: 2px;
+            font-weight: normal;
+        }
+        
+        .subtitle {
+            color: var(--terminal-header);
+            font-style: italic;
+            text-shadow: 0 0 3px var(--glow-color);
+        }
+        
+        /* Tool Selection Screen */
+        .tool-selection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .tool-selection h2 {
+            color: var(--terminal-text);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: normal;
+            text-shadow: 0 0 3px var(--glow-color);
+            border-bottom: 1px solid var(--terminal-border);
+            padding-bottom: 10px;
+            width: 100%;
+        }
+        
+        .tool-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .tool-card {
+            background: rgba(0, 20, 0, 0.3);
+            border-radius: 0;
+            padding: 20px;
+            width: 250px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--terminal-border);
+            box-shadow: 0 0 10px rgba(0, 80, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tool-card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent 0%,
+                transparent 45%,
+                rgba(0, 255, 0, 0.1) 50%,
+                transparent 55%,
+                transparent 100%
+            );
+            transform: rotate(30deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) rotate(30deg); }
+        }
+        
+        .tool-card:hover {
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+            border-color: var(--terminal-highlight);
+            transform: translateY(-3px);
+        }
+        
+        .tool-card.active {
+            border-color: var(--terminal-highlight);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.7);
+        }
+        
+        .tool-card.active::before {
+            animation: none;
+            display: none;
+        }
+        
+        .tool-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--terminal-highlight);
+            text-shadow: 0 0 5px var(--glow-color);
+        }
+        
+        .tool-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--terminal-text);
+        }
+        
+        .tool-description {
+            font-size: 0.9rem;
+            color: var(--terminal-header);
+            margin-bottom: 15px;
+        }
+        
+        /* Game Area */
+        .game-area {
+            display: none;
+            flex-direction: column;
+            gap: 0;
+        }
+        
+        .mission-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0;
+            padding: 15px 20px;
+            background-color: rgba(0, 20, 0, 0.3);
+            border-bottom: 1px solid var(--terminal-border);
+        }
+        
+        .tool-indicator {
+            background-color: rgba(0, 80, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 0;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--terminal-text);
+            border: 1px solid var(--terminal-border);
+        }
+        
+        .terminal {
+            background-color: var(--terminal-bg);
+            border: none;
+            border-radius: 0;
+            padding: 15px;
+            min-height: 300px;
+            font-family: 'Courier New', monospace;
+            overflow-y: auto;
+            max-height: 400px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        
+        .terminal::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(rgba(0, 255, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 0, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+        }
+        
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: var(--terminal-header);
+            font-weight: bold;
+            border-bottom: 1px solid var(--terminal-border);
+            padding-bottom: 5px;
+        }
+        
+        .terminal-content {
+            white-space: pre-wrap;
+            color: var(--terminal-text);
+            line-height: 1.5;
+            font-size: 0.95rem;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 3px var(--glow-color);
+        }
+        
+        .command-line {
+            display: flex;
+            align-items: center;
             gap: 10px;
+            margin-top: 15px;
+            background-color: rgba(0, 10, 0, 0.5);
+            padding: 10px;
+            border-top: 1px solid var(--terminal-border);
         }
         
-        .language-item {
-            font-size: 12px;
-        }
-        
-        .language-name {
+        .prompt {
+            color: var(--terminal-prompt);
             font-weight: bold;
         }
         
-        .interests {
+        #command-input {
+            flex-grow: 1;
+            background-color: transparent;
+            border: 1px solid var(--terminal-border);
+            color: var(--terminal-text);
+            padding: 8px 12px;
+            font-family: 'Courier New', monospace;
+            border-radius: 0;
+            font-size: 0.95rem;
+            caret-color: var(--terminal-cursor);
+        }
+        
+        #command-input:focus {
+            outline: none;
+            border-color: var(--terminal-highlight);
+            box-shadow: 0 0 5px var(--glow-color);
+        }
+        
+        button {
+            background-color: rgba(0, 80, 0, 0.5);
+            color: var(--terminal-text);
+            border: 1px solid var(--terminal-border);
+            padding: 8px 15px;
+            border-radius: 0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 3px var(--glow-color);
+        }
+        
+        button:hover {
+            background-color: rgba(0, 120, 0, 0.7);
+            border-color: var(--terminal-highlight);
+            box-shadow: 0 0 10px var(--glow-color);
+        }
+        
+        .mission-info {
+            background: rgba(0, 20, 0, 0.3);
+            padding: 20px;
+            border-bottom: 1px solid var(--terminal-border);
+        }
+        
+        .mission-info h3 {
+            color: var(--terminal-highlight);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            font-weight: normal;
+        }
+        
+        .mission-actions {
             display: flex;
-            flex-wrap: wrap;
             gap: 10px;
+            margin-top: 15px;
         }
         
-        .interest-item {
+        .progress-container {
+            margin-top: 0;
+            background-color: rgba(0, 20, 0, 0.3);
+            padding: 15px;
+            border-top: 1px solid var(--terminal-border);
+        }
+        
+        .progress-header {
             display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: rgba(0, 10, 0, 0.5);
+            border-radius: 0;
+            overflow: hidden;
+            margin-bottom: 10px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--terminal-border);
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--terminal-border), var(--terminal-highlight));
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--terminal-header);
+        }
+        
+        .xp-gained {
+            color: var(--terminal-highlight);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        /* Help Button & Modal */
+        .help-button {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: rgba(0, 80, 0, 0.7);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 5px;
-            font-size: 12px;
+            font-size: 1.5rem;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+            border: 1px solid var(--terminal-border);
+            color: var(--terminal-text);
         }
         
-        .interest-icon {
-            font-size: 14px;
-            color: var(--secondary);
+        .help-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px var(--glow-color);
+            background-color: rgba(0, 120, 0, 0.9);
         }
         
-        @media (max-width: 600px) {
-            .main-content {
-                flex-direction: column;
-            }
-            
-            .skills-container, .languages {
-                grid-template-columns: 1fr;
-            }
-            
-            .contact-info {
-                flex-direction: column;
-                gap: 8px;
-            }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
         }
         
-        @media print {
-            body {
+        .modal-content {
+            background: var(--terminal-bg);
+            padding: 20px;
+            border-radius: 0;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--terminal-border);
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--terminal-text);
+            transition: all 0.3s;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+        
+        .close-modal:hover {
+            color: var(--terminal-error);
+        }
+        
+        .cheat-sheet {
+            margin-top: 20px;
+        }
+        
+        .cheat-sheet h3 {
+            color: var(--terminal-highlight);
+            margin: 20px 0 15px;
+            font-size: 1.3rem;
+            border-bottom: 1px solid var(--terminal-border);
+            padding-bottom: 5px;
+            font-weight: normal;
+        }
+        
+        .cheat-sheet table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border: 1px solid var(--terminal-border);
+        }
+        
+        .cheat-sheet th, .cheat-sheet td {
+            border: 1px solid var(--terminal-border);
+            padding: 10px;
+            text-align: left;
+        }
+        
+        .cheat-sheet th {
+            background-color: rgba(0, 40, 0, 0.5);
+            color: var(--terminal-text);
+        }
+        
+        .cheat-sheet tr:nth-child(even) {
+            background-color: rgba(0, 20, 0, 0.2);
+        }
+        
+        .cheat-sheet code {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 2px 5px;
+            border-radius: 0;
+            font-family: 'Courier New', monospace;
+            color: var(--terminal-highlight);
+            border: 1px solid var(--terminal-border);
+        }
+        
+        /* Messages */
+        .success-message {
+            color: var(--terminal-success);
+            font-weight: bold;
+            animation: pulse 1.5s infinite;
+            background-color: rgba(0, 40, 0, 0.3);
+            padding: 10px;
+            border-left: 3px solid var(--terminal-success);
+            margin: 10px 0;
+            border-radius: 0;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .error-message {
+            color: var(--terminal-error);
+            background-color: rgba(80, 0, 0, 0.3);
+            padding: 10px;
+            border-left: 3px solid var(--terminal-error);
+            margin: 10px 0;
+            border-radius: 0;
+        }
+        
+        .info-message {
+            color: var(--terminal-info);
+            background-color: rgba(0, 0, 40, 0.3);
+            padding: 10px;
+            border-left: 3px solid var(--terminal-info);
+            margin: 10px 0;
+            border-radius: 0;
+        }
+        
+        .warning-message {
+            color: var(--terminal-warning);
+            background-color: rgba(80, 40, 0, 0.3);
+            padding: 10px;
+            border-left: 3px solid var(--terminal-warning);
+            margin: 10px 0;
+            border-radius: 0;
+        }
+        
+        /* Completed Screen */
+        .completed-screen {
+            text-align: center;
+            padding: 40px 20px;
+            display: none;
+        }
+        
+        .completed-icon {
+            font-size: 4rem;
+            color: var(--terminal-success);
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+        
+        .completed-title {
+            color: var(--terminal-highlight);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px var(--glow-color);
+        }
+        
+        .completed-message {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: var(--terminal-text);
+        }
+        
+        /* Typewriter effect */
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid var(--terminal-highlight);
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: 1px;
+            animation: 
+                typing 3.5s steps(40, end),
+                blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--terminal-highlight); }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
                 padding: 0;
-                font-size: 12px;
             }
             
-            .cv-container {
-                box-shadow: none;
+            h1 {
+                font-size: 1.8rem;
             }
             
-            header {
-                padding: 15px;
+            .tool-cards {
+                flex-direction: column;
+                align-items: center;
             }
             
-            .left-column, .right-column {
-                padding: 10px;
+            .tool-card {
+                width: 100%;
+                max-width: 350px;
             }
             
-            .contact-item i {
-                display: none;
+            .terminal {
+                min-height: 350px;
+                max-height: 50vh;
             }
             
-            a::after {
-                content: " (" attr(href) ")";
-                font-size: 0.8em;
-                font-weight: normal;
+            .help-button {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
             }
-            
-            .no-print {
-                display: none !important;
-            }
+        }
+        
+        /* Cursor blink */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background-color: var(--terminal-cursor);
+            vertical-align: middle;
+            margin-left: 2px;
+            animation: blink 1s step-end infinite;
         }
     </style>
 </head>
 <body>
-    <div class="cv-container">
+    <div class="container">
         <header>
-            <h1>Mohammad Yazan Alrawi</h1>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <i class="fas fa-birthday-cake"></i>
-                    <span>15.01.2000</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Austtunsletta 87, Stavanger</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-phone"></i>
-                    <span>+47 968 25 634</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>mohamad.y.rawi@hotmail.com</span>
-                </div>
-            </div>
+            <h1>CYBER TERMINAL DOJO</h1>
+            <p class="subtitle">// MASTER SECURITY TOOLS THROUGH INTERACTIVE CHALLENGES</p>
         </header>
         
-        <div class="main-content">
-            <div class="left-column">
-                <section>
-                    <h2>Personlig Profil</h2>
-                    <div class="profile-text">
-                        <p>Engasjert og omsorgsfull medarbeider med bred erfaring innen teknisk støtte, problemløsning og kommunikasjon. Jeg trives med å være en positiv ressurs for mennesker rundt meg, enten det er i en pedagogisk rolle, et teknisk miljø eller innen kundeservice.</p>
+        <!-- Tool Selection Screen -->
+        <div class="tool-selection" id="tool-selection">
+            <h2>SELECT TRAINING MODULE</h2>
+            <div class="tool-cards">
+                <div class="tool-card" data-tool="nmap">
+                    <div class="tool-icon">🛡️</div>
+                    <div class="tool-name">NMAP</div>
+                    <div class="tool-description">
+                        NETWORK SCANNING AND ENUMERATION TOOL
                     </div>
-                </section>
+                    <button class="select-tool">INITIALIZE</button>
+                </div>
                 
-                <section>
-                    <h2>Ferdigheter</h2>
-                    <div class="skills-container">
-                        <div class="skill-item">
-                            <div class="skill-name">Kundeservice</div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 90%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-name">Kommunikasjon</div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 85%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-name">Problemløsning</div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 88%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-name">Teknologikunnskap</div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 82%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-name">Lagerhåndtering</div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 80%"></div>
-                            </div>
-                        </div>
+                <div class="tool-card" data-tool="wireshark">
+                    <div class="tool-icon">📡</div>
+                    <div class="tool-name">WIRESHARK</div>
+                    <div class="tool-description">
+                        NETWORK PROTOCOL ANALYZER
                     </div>
-                </section>
+                    <button class="select-tool">INITIALIZE</button>
+                </div>
                 
-                <section>
-                    <h2>Språk</h2>
-                    <div class="languages">
-                        <div class="language-item">
-                            <div class="language-name">Norsk</div>
-                            <div class="language-level">Flytende</div>
-                        </div>
-                        <div class="language-item">
-                            <div class="language-name">Arabisk</div>
-                            <div class="language-level">Morsmål</div>
-                        </div>
-                        <div class="language-item">
-                            <div class="language-name">Engelsk</div>
-                            <div class="language-level">Flytende</div>
-                        </div>
-                        <div class="language-item">
-                            <div class="language-name">Tyrkisk</div>
-                            <div class="language-level">Daglig samtalenivå</div>
-                        </div>
+                <div class="tool-card coming-soon" data-tool="coming-soon">
+                    <div class="tool-icon">🔒</div>
+                    <div class="tool-name">MORE MODULES</div>
+                    <div class="tool-description">
+                        ADDITIONAL TOOLS COMING SOON
                     </div>
-                </section>
-                
-                <section>
-                    <h2>Interesser</h2>
-                    <div class="interests">
-                        <div class="interest-item">
-                            <i class="fas fa-gamepad interest-icon"></i>
-                            <span>Gaming</span>
-                        </div>
-                        <div class="interest-item">
-                            <i class="fas fa-futbol interest-icon"></i>
-                            <span>Fotball</span>
-                        </div>
-                        <div class="interest-item">
-                            <i class="fas fa-laptop-code interest-icon"></i>
-                            <span>Teknologi</span>
-                        </div>
-                    </div>
-                </section>
+                    <button class="select-tool" disabled>LOCKED</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Game Area -->
+        <div class="game-area" id="game-area">
+            <div class="mission-header">
+                <h3 id="mission-title">MISSION 1: BASIC SCAN</h3>
+                <div class="tool-indicator" id="tool-indicator">NMAP</div>
             </div>
             
-            <div class="right-column">
-                <section>
-                    <h2>Arbeidserfaring</h2>
-                    <div class="timeline-item">
-                        <div class="timeline-header">
-                            <div class="timeline-title">Grocery Associate</div>
-                            <div class="timeline-date">Nåværende</div>
-                        </div>
-                        <div class="timeline-subtitle">Wolt Market, Stavanger</div>
-                        <div class="timeline-description">
-                            <ul>
-                                <li>Ansvar for varehåndtering, lagerstyring og kundeservice</li>
-                                <li>Sørger for effektiv vareplassering og påfylling</li>
-                                <li>Arbeider i team for smidig drift og god kundeopplevelse</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline-item">
-                        <div class="timeline-header">
-                            <div class="timeline-title">IT-Support</div>
-                        </div>
-                        <div class="timeline-subtitle">St. Olav Videregående Skole, Stavanger</div>
-                        <div class="timeline-description">
-                            <ul>
-                                <li>Veiledet elever og ansatte med teknisk støtte</li>
-                                <li>Utførte problemløsning på strukturert måte</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline-item">
-                        <div class="timeline-header">
-                            <div class="timeline-title">IT-Avdeling</div>
-                        </div>
-                        <div class="timeline-subtitle">SOTS Videregående Skole</div>
-                        <div class="timeline-description">
-                            <ul>
-                                <li>Bidro med teknisk support i team</li>
-                                <li>Styrket samarbeidsevner</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline-item">
-                        <div class="timeline-header">
-                            <div class="timeline-title">IT-Avdeling</div>
-                        </div>
-                        <div class="timeline-subtitle">Randaberg Videregående Skole</div>
-                        <div class="timeline-description">
-                            <ul>
-                                <li>Tilbød brukerstøtte med fokus på tålmodighet</li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
+            <div class="mission-info">
+                <p id="mission-description">> YOUR FIRST TASK IS TO PERFORM A BASIC SCAN OF THE TARGET NETWORK. USE THE NMAP COMMAND TO SCAN THE IP ADDRESS 192.168.1.1</p>
+                <p id="mission-hint" style="display: none; color: var(--terminal-warning);">> HINT: THE BASIC NMAP COMMAND IS JUST 'NMAP' FOLLOWED BY THE TARGET IP.</p>
                 
-                <section>
-                    <h2>Utdanning</h2>
-                    <div class="timeline-item">
-                        <div class="timeline-header">
-                            <div class="timeline-title">Generell studiekompetanse</div>
-                            <div class="timeline-date">2024</div>
-                        </div>
-                        <div class="timeline-subtitle">Stavanger Offshore Tekniske Skole</div>
-                    </div>
-                    
-                    <div class="timeline-item">
-                        <div class="timeline-header">
-                            <div class="timeline-title">VG1 Informasjonsteknologi</div>
-                            <div class="timeline-date">2021</div>
-                        </div>
-                        <div class="timeline-subtitle">Vågen Videregående Skole</div>
-                    </div>
-                </section>
-                
-                <section>
-                    <h2>Karrieremål</h2>
-                    <div class="profile-text">
-                        <p>Jeg ønsker å utvikle meg videre som en allsidig medarbeider med kompetanse innen både teknisk og menneskelig støtte. Mitt mål er å bidra til trivsel og effektivitet, samtidig som jeg bygger erfaring og kompetanse for å vokse i arbeidslivet.</p>
-                    </div>
-                </section>
+                <div class="mission-actions">
+                    <button id="hint-btn">REQUEST HINT</button>
+                    <button id="skip-btn">SKIP MISSION</button>
+                </div>
+            </div>
+            
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span>TERMINAL</span>
+                    <span id="tool-version">NMAP v7.92</span>
+                </div>
+                <div class="terminal-content" id="terminal-output">
+> WELCOME TO CYBER TERMINAL DOJO
+> TYPE 'HELP' FOR AVAILABLE COMMANDS
+> MISSION INITIALIZED...
+                </div>
+                <div class="command-line">
+                    <span class="prompt">></span>
+                    <input type="text" id="command-input" placeholder="ENTER COMMAND..." autofocus>
+                    <span class="cursor"></span>
+                    <button id="execute-btn">EXECUTE</button>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-header">
+                    <div class="progress-text" id="progress-text">PROGRESS: 0/5 MISSIONS COMPLETED</div>
+                    <div class="xp-gained" id="xp-gained">XP: 0</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" id="progress-bar"></div>
+                </div>
+            </div>
+            
+            <button id="back-btn" style="align-self: flex-start;">← RETURN TO MODULE SELECT</button>
+        </div>
+        
+        <!-- Completed Screen -->
+        <div class="completed-screen" id="completed-screen">
+            <div class="completed-icon">[ ACCESS GRANTED ]</div>
+            <h2 class="completed-title">TRAINING COMPLETE</h2>
+            <p class="completed-message" id="completed-message">
+                > CONGRATULATIONS! YOU'VE COMPLETED ALL NMAP MISSIONS AND EARNED <span id="total-xp">0</span> XP.
+                > YOU'RE NOW READY TO USE NMAP IN REAL-WORLD SCENARIOS!
+            </p>
+            <button id="new-tool-btn">SELECT NEW MODULE</button>
+            <button id="replay-btn" style="margin-top: 15px;">REPLAY MISSIONS</button>
+        </div>
+    </div>
+    
+    <!-- Help Button -->
+    <div class="help-button" id="help-button">?</div>
+    
+    <!-- Help Modal -->
+    <div class="modal" id="help-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-modal">X</button>
+            <h2>CYBER TERMINAL DOJO HELP</h2>
+            <p>> WELCOME TO THE CYBER TERMINAL DOJO. HERE'S HOW TO TRAIN:</p>
+            <ul>
+                <li>> SELECT A SECURITY TOOL FROM THE MAIN MENU</li>
+                <li>> COMPLETE MISSIONS BY ENTERING CORRECT COMMANDS</li>
+                <li>> EARN XP FOR EACH COMPLETED MISSION</li>
+                <li>> USE HINTS IF YOU GET STUCK</li>
+                <li>> CHECK THE CHEAT SHEET FOR COMMAND REFERENCES</li>
+            </ul>
+            
+            <div class="cheat-sheet" id="nmap-cheat-sheet">
+                <h3>NMAP COMMAND REFERENCE</h3>
+                <table>
+                    <tr>
+                        <th>COMMAND</th>
+                        <th>DESCRIPTION</th>
+                    </tr>
+                    <tr>
+                        <td><code>nmap [target]</code></td>
+                        <td>BASIC SCAN OF TARGET IP OR HOSTNAME</td>
+                    </tr>
+                    <tr>
+                        <td><code>nmap -sS [target]</code></td>
+                        <td>STEALTH SYN SCAN (REQUIRES ROOT)</td>
+                    </tr>
+                    <tr>
+                        <td><code>nmap -sV [target]</code></td>
+                        <td>SCAN FOR SERVICE VERSIONS</td>
+                    </tr>
+                    <tr>
+                        <td><code>nmap -O [target]</code></td>
+                        <td>OS DETECTION</td>
+                    </tr>
+                    <tr>
+                        <td><code>nmap -p [ports] [target]</code></td>
+                        <td>SCAN SPECIFIC PORTS (COMMA-SEPARATED)</td>
+                    </tr>
+                    <tr>
+                        <td><code>nmap -A [target]</code></td>
+                        <td>AGGRESSIVE SCAN (OS, VERSION, SCRIPT, TRACEROUTE)</td>
+                    </tr>
+                    <tr>
+                        <td><code>nmap -T[0-5] [target]</code></td>
+                        <td>SET TIMING TEMPLATE (HIGHER IS FASTER)</td>
+                    </tr>
+                    <tr>
+                        <td><code>nmap --script [script] [target]</code></td>
+                        <td>RUN NSE SCRIPT AGAINST TARGET</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="cheat-sheet" id="wireshark-cheat-sheet" style="display: none;">
+                <h3>WIRESHARK FILTER REFERENCE</h3>
+                <table>
+                    <tr>
+                        <th>FILTER</th>
+                        <th>DESCRIPTION</th>
+                    </tr>
+                    <tr>
+                        <td><code>ip.addr == x.x.x.x</code></td>
+                        <td>FILTER BY IP ADDRESS</td>
+                    </tr>
+                    <tr>
+                        <td><code>tcp.port == xx</code></td>
+                        <td>FILTER BY TCP PORT</td>
+                    </tr>
+                    <tr>
+                        <td><code>udp.port == xx</code></td>
+                        <td>FILTER BY UDP PORT</td>
+                    </tr>
+                    <tr>
+                        <td><code>http</code></td>
+                        <td>SHOW HTTP TRAFFIC</td>
+                    </tr>
+                    <tr>
+                        <td><code>dns</code></td>
+                        <td>SHOW DNS TRAFFIC</td>
+                    </tr>
+                    <tr>
+                        <td><code>tcp.flags.syn == 1</code></td>
+                        <td>SHOW SYN PACKETS (CONNECTION STARTS)</td>
+                    </tr>
+                    <tr>
+                        <td><code>tcp.flags.reset == 1</code></td>
+                        <td>SHOW RST PACKETS (CONNECTION RESETS)</td>
+                    </tr>
+                    <tr>
+                        <td><code>frame contains "text"</code></td>
+                        <td>SHOW PACKETS CONTAINING SPECIFIC TEXT</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
-
-    <button class="no-print" onclick="window.print()" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 15px; background: var(--primary); color: white; border: none; border-radius: 5px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 8px;">
-        <i class="fas fa-print"></i>
-        <span>Print CV</span>
-    </button>
-
+    
     <script>
-        // Automatically adjust content to fit one page when printing
-        function adjustForPrint() {
-            if (window.matchMedia('print').matches) {
-                const sections = document.querySelectorAll('section');
-                let fontSize = 14;
-                
-                // Reduce font size until content fits
-                while (document.body.scrollHeight > 1123) { // A4 height in pixels at 96dpi
-                    fontSize -= 0.1;
-                    document.body.style.fontSize = fontSize + 'px';
-                    
-                    // Stop if font gets too small
-                    if (fontSize <= 10) break;
+        // JavaScript Game Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const toolSelection = document.getElementById('tool-selection');
+            const gameArea = document.getElementById('game-area');
+            const completedScreen = document.getElementById('completed-screen');
+            const commandInput = document.getElementById('command-input');
+            const executeBtn = document.getElementById('execute-btn');
+            const terminalOutput = document.getElementById('terminal-output');
+            const missionTitle = document.getElementById('mission-title');
+            const missionDescription = document.getElementById('mission-description');
+            const missionHint = document.getElementById('mission-hint');
+            const hintBtn = document.getElementById('hint-btn');
+            const skipBtn = document.getElementById('skip-btn');
+            const backBtn = document.getElementById('back-btn');
+            const newToolBtn = document.getElementById('new-tool-btn');
+            const replayBtn = document.getElementById('replay-btn');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            const xpGained = document.getElementById('xp-gained');
+            const totalXp = document.getElementById('total-xp');
+            const completedMessage = document.getElementById('completed-message');
+            const toolIndicator = document.getElementById('tool-indicator');
+            const toolVersion = document.getElementById('tool-version');
+            const helpButton = document.getElementById('help-button');
+            const helpModal = document.getElementById('help-modal');
+            const closeModal = document.getElementById('close-modal');
+            const nmapCheatSheet = document.getElementById('nmap-cheat-sheet');
+            const wiresharkCheatSheet = document.getElementById('wireshark-cheat-sheet');
+            const toolCards = document.querySelectorAll('.tool-card');
+            const selectToolBtns = document.querySelectorAll('.select-tool');
+            
+            // Game State
+            let currentTool = '';
+            let currentMission = 0;
+            let completedMissions = 0;
+            let totalMissions = 0;
+            let xp = 0;
+            let missions = [];
+            
+            // Missions data
+            const toolsData = {
+                nmap: {
+                    name: "NMAP",
+                    version: "v7.92",
+                    missions: [
+                        {
+                            title: "MISSION 1: BASIC SCAN",
+                            description: "> YOUR FIRST TASK IS TO PERFORM A BASIC SCAN OF THE TARGET NETWORK. USE THE NMAP COMMAND TO SCAN THE IP ADDRESS 192.168.1.1",
+                            hint: "> HINT: THE BASIC NMAP COMMAND IS JUST 'NMAP' FOLLOWED BY THE TARGET IP.",
+                            solution: "nmap 192.168.1.1",
+                            successMessage: "> SUCCESS! YOU'VE PERFORMED YOUR FIRST NMAP SCAN. THIS IS THE MOST BASIC FORM OF SCANNING, WHICH CHECKS WHICH PORTS ARE OPEN ON THE TARGET.",
+                            output: "STARTING NMAP 7.92 (HTTPS://NMAP.ORG)\nNMAP SCAN REPORT FOR 192.168.1.1\nHOST IS UP (0.045s LATENCY).\n\nPORT     STATE SERVICE\n22/TCP   OPEN  SSH\n80/TCP   OPEN  HTTP\n443/TCP  OPEN  HTTPS\n\nNMAP DONE: 1 IP ADDRESS (1 HOST UP) SCANNED IN 1.23 SECONDS",
+                            xp: 50
+                        },
+                        {
+                            title: "MISSION 2: PORT SPECIFICATION",
+                            description: "> NOW SCAN ONLY PORTS 80 AND 443 ON THE TARGET 10.0.0.5. THIS IS USEFUL WHEN YOU WANT TO CHECK SPECIFIC SERVICES.",
+                            hint: "> HINT: USE THE -P OPTION FOLLOWED BY PORT NUMBERS SEPARATED BY COMMAS.",
+                            solution: "nmap -p 80,443 10.0.0.5",
+                            successMessage: "> EXCELLENT! YOU'VE LEARNED HOW TO SCAN SPECIFIC PORTS. THIS IS VERY EFFICIENT WHEN YOU ONLY NEED TO CHECK CERTAIN SERVICES.",
+                            output: "STARTING NMAP 7.92 (HTTPS://NMAP.ORG)\nNMAP SCAN REPORT FOR 10.0.0.5\nHOST IS UP (0.032s LATENCY).\n\nPORT    STATE SERVICE\n80/TCP  OPEN  HTTP\n443/TCP OPEN  HTTPS\n\nNMAP DONE: 1 IP ADDRESS (1 HOST UP) SCANNED IN 0.45 SECONDS",
+                            xp: 75
+                        },
+                        {
+                            title: "MISSION 3: SERVICE DETECTION",
+                            description: "> PERFORM A SCAN ON 172.16.0.10 THAT DETECTS SERVICE VERSIONS. THIS HELPS IDENTIFY WHAT SOFTWARE IS RUNNING ON OPEN PORTS.",
+                            hint: "> HINT: USE THE -SV FLAG TO ENABLE VERSION DETECTION.",
+                            solution: "nmap -sV 172.16.0.10",
+                            successMessage: "> WELL DONE! VERSION DETECTION IS CRUCIAL FOR IDENTIFYING POTENTIAL VULNERABILITIES IN RUNNING SERVICES.",
+                            output: "STARTING NMAP 7.92 (HTTPS://NMAP.ORG)\nNMAP SCAN REPORT FOR 172.16.0.10\nHOST IS UP (0.028s LATENCY).\n\nPORT     STATE SERVICE    VERSION\n22/TCP   OPEN  SSH        OPENSSH 7.9P1\n80/TCP   OPEN  HTTP       APACHE HTTPD 2.4.41\n443/TCP  OPEN  SSL/HTTP   APACHE HTTPD 2.4.41\n\nSERVICE DETECTION PERFORMED. PLEASE REPORT ANY INCORRECT RESULTS AT HTTPS://NMAP.ORG/SUBMIT/.\nNMAP DONE: 1 IP ADDRESS (1 HOST UP) SCANNED IN 8.12 SECONDS",
+                            xp: 100
+                        },
+                        {
+                            title: "MISSION 4: STEALTH SCAN",
+                            description: "> PERFORM A STEALTH SYN SCAN ON 192.168.2.15. THIS IS LESS LIKELY TO BE LOGGED THAN A FULL CONNECT SCAN.",
+                            hint: "> HINT: USE THE -SS FLAG FOR A SYN SCAN (REQUIRES ROOT PRIVILEGES).",
+                            solution: "nmap -sS 192.168.2.15",
+                            successMessage: "> EXCELLENT WORK! SYN SCANS ARE FASTER AND STEALTHIER THAN REGULAR TCP CONNECT SCANS.",
+                            output: "STARTING NMAP 7.92 (HTTPS://NMAP.ORG)\nNMAP SCAN REPORT FOR 192.168.2.15\nHOST IS UP (0.051s LATENCY).\n\nPORT     STATE SERVICE\n22/TCP   OPEN  SSH\n139/TCP  OPEN  NETBIOS-SSN\n445/TCP  OPEN  MICROSOFT-DS\n\nNMAP DONE: 1 IP ADDRESS (1 HOST UP) SCANNED IN 1.87 SECONDS",
+                            xp: 125
+                        },
+                        {
+                            title: "MISSION 5: AGGRESSIVE SCAN",
+                            description: "> PERFORM AN AGGRESSIVE SCAN ON 10.10.10.20. THIS COMBINES SEVERAL ADVANCED TECHNIQUES IN ONE COMMAND.",
+                            hint: "> HINT: USE THE -A FLAG FOR AN AGGRESSIVE SCAN (OS DETECTION, VERSION DETECTION, SCRIPT SCANNING, AND TRACEROUTE).",
+                            solution: "nmap -A 10.10.10.20",
+                            successMessage: "> CONGRATULATIONS! YOU'VE MASTERED THE AGGRESSIVE SCAN, WHICH COMBINES MULTIPLE ADVANCED TECHNIQUES. YOU'RE NOW READY FOR REAL-WORLD SCANNING!",
+                            output: "STARTING NMAP 7.92 (HTTPS://NMAP.ORG)\nNMAP SCAN REPORT FOR 10.10.10.20\nHOST IS UP (0.039s LATENCY).\n\nPORT     STATE SERVICE    VERSION\n22/TCP   OPEN  SSH        OPENSSH 7.6P1 UBUNTU 4UBUNTU0.3\n| SSH-HOSTKEY: \n|   2048 AB:CD:EF:12:34:56:78:90:12:34:56:78:90:12:34:56 (RSA)\n80/TCP   OPEN  HTTP       APACHE HTTPD 2.4.29\n|_HTTP-TITLE: SAMPLE WEBSITE\n|_HTTP-SERVER-HEADER: APACHE/2.4.29 (UBUNTU)\n\nAGGRESSIVE OS GUESSES: LINUX 3.2 - 4.9 (96%), LINUX 3.10 - 4.11 (95%)\n\nNMAP DONE: 1 IP ADDRESS (1 HOST UP) SCANNED IN 12.45 SECONDS",
+                            xp: 150
+                        }
+                    ]
+                },
+                wireshark: {
+                    name: "WIRESHARK",
+                    version: "v3.6.5",
+                    missions: [
+                        {
+                            title: "MISSION 1: BASIC CAPTURE",
+                            description: "> START CAPTURING NETWORK TRAFFIC ON THE ETH0 INTERFACE. SAVE THE CAPTURE TO A FILE NAMED 'CAPTURE.PCAP'.",
+                            hint: "> HINT: USE THE -I FLAG TO SPECIFY THE INTERFACE AND -W TO WRITE TO A FILE.",
+                            solution: "tshark -i eth0 -w capture.pcap",
+                            successMessage: "> GOOD START! YOU'VE BEGUN CAPTURING NETWORK TRAFFIC. THIS IS THE FOUNDATION OF NETWORK ANALYSIS.",
+                            output: "CAPTURING ON 'ETH0'\nFILE: CAPTURE.PCAP\nPACKETS CAPTURED: 0\nPACKETS RECEIVED/DROPPED ON INTERFACE ETH0: 0/0 (PCAP:0/DUMP:0/IFDROP:0/FLUSHED:0/PS_IFDROP:0)",
+                            xp: 50
+                        },
+                        {
+                            title: "MISSION 2: FILTER HTTP TRAFFIC",
+                            description: "> CAPTURE ONLY HTTP TRAFFIC (PORT 80) ON INTERFACE ETH0 AND DISPLAY IT IN THE TERMINAL.",
+                            hint: "> HINT: USE THE 'PORT 80' FILTER TO CAPTURE HTTP TRAFFIC.",
+                            solution: "tshark -i eth0 port 80",
+                            successMessage: "> WELL DONE! FILTERING SPECIFIC TRAFFIC TYPES IS ESSENTIAL FOR EFFICIENT ANALYSIS.",
+                            output: "CAPTURING ON 'ETH0'\n1 0.000000 192.168.1.100 → 104.16.85.20 HTTP 150 GET / HTTP/1.1\n2 0.050000 104.16.85.20 → 192.168.1.100 HTTP 200 OK (TEXT/HTML)",
+                            xp: 75
+                        },
+                        {
+                            title: "MISSION 3: FIND DNS QUERIES",
+                            description: "> CAPTURE AND DISPLAY ONLY DNS QUERY PACKETS ON INTERFACE ETH0.",
+                            hint: "> HINT: USE THE 'DNS' FILTER TO CAPTURE DNS TRAFFIC.",
+                            solution: "tshark -i eth0 dns",
+                            successMessage: "> EXCELLENT! DNS ANALYSIS HELPS UNDERSTAND DOMAIN RESOLUTION PATTERNS.",
+                            output: "CAPTURING ON 'ETH0'\n1 0.000000 192.168.1.100 → 8.8.8.8 DNS 78 STANDARD QUERY A EXAMPLE.COM\n2 0.050000 8.8.8.8 → 192.168.1.100 DNS 94 STANDARD QUERY RESPONSE A EXAMPLE.COM A 93.184.216.34",
+                            xp: 100
+                        },
+                        {
+                            title: "MISSION 4: ANALYZE TCP STREAM",
+                            description: "> FOLLOW A TCP STREAM BETWEEN TWO HOSTS (192.168.1.100 AND 104.16.85.20) ON PORT 443.",
+                            hint: "> HINT: USE THE '-Z FOLLOW,TCP,...' OPTION TO FOLLOW A TCP STREAM.",
+                            solution: "tshark -i eth0 -z follow,tcp,ascii,192.168.1.100,104.16.85.20,443",
+                            successMessage: "> GREAT WORK! FOLLOWING TCP STREAMS REVEALS THE ACTUAL CONTENT OF COMMUNICATIONS.",
+                            output: "===================================================================\nFOLLOW: TCP,ASCII\nFILTER: TCP.STREAM EQ 0\nNODE 0: 192.168.1.100:45678 → 104.16.85.20:443\nGET / HTTP/1.1\nHOST: EXAMPLE.COM\n...\n\nNODE 1: 104.16.85.20:443 → 192.168.1.100:45678\nHTTP/1.1 200 OK\n...",
+                            xp: 125
+                        },
+                        {
+                            title: "MISSION 5: DETECT SUSPICIOUS ACTIVITY",
+                            description: "> CAPTURE AND DISPLAY ALL TCP PACKETS WITH THE RST FLAG SET ON INTERFACE ETH0.",
+                            hint: "> HINT: USE THE 'TCP.FLAGS.RESET == 1' FILTER TO FIND RESET PACKETS.",
+                            solution: "tshark -i eth0 'tcp.flags.reset == 1'",
+                            successMessage: "> CONGRATULATIONS! YOU'VE COMPLETED WIRESHARK TRAINING. ANALYZING FLAGS HELPS DETECT NETWORK ANOMALIES AND ATTACKS!",
+                            output: "CAPTURING ON 'ETH0'\n1 0.000000 192.168.1.1 → 192.168.1.100 TCP 54 80 → 45678 [RST] SEQ=1 WIN=0 LEN=0\n2 0.050000 192.168.1.100 → 192.168.1.1 TCP 54 45678 → 80 [RST] SEQ=1 WIN=0 LEN=0",
+                            xp: 150
+                        }
+                    ]
                 }
+            };
+            
+            // Event Listeners
+            executeBtn.addEventListener('click', executeCommand);
+            commandInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    executeCommand();
+                }
+            });
+            
+            hintBtn.addEventListener('click', showHint);
+            skipBtn.addEventListener('click', skipMission);
+            backBtn.addEventListener('click', backToTools);
+            newToolBtn.addEventListener('click', backToTools);
+            replayBtn.addEventListener('click', replayMissions);
+            
+            helpButton.addEventListener('click', showHelpModal);
+            closeModal.addEventListener('click', hideHelpModal);
+            
+            window.addEventListener('click', function(e) {
+                if (e.target === helpModal) {
+                    hideHelpModal();
+                }
+            });
+            
+            // Tool selection
+            selectToolBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const toolCard = this.closest('.tool-card');
+                    if (toolCard && !toolCard.classList.contains('coming-soon')) {
+                        selectTool(toolCard.dataset.tool);
+                    }
+                });
+            });
+            
+            toolCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    if (!this.classList.contains('coming-soon')) {
+                        toolCards.forEach(c => c.classList.remove('active'));
+                        this.classList.add('active');
+                    }
+                });
+            });
+            
+            // Initialize game
+            resetGame();
+            
+            // Game Functions
+            function selectTool(tool) {
+                currentTool = tool;
+                missions = toolsData[tool].missions;
+                totalMissions = missions.length;
+                
+                // Update UI
+                toolIndicator.textContent = toolsData[tool].name;
+                toolVersion.textContent = toolsData[tool].version;
+                
+                // Show correct cheat sheet
+                if (tool === 'nmap') {
+                    nmapCheatSheet.style.display = 'block';
+                    wiresharkCheatSheet.style.display = 'none';
+                } else if (tool === 'wireshark') {
+                    nmapCheatSheet.style.display = 'none';
+                    wiresharkCheatSheet.style.display = 'block';
+                }
+                
+                // Switch to game area
+                toolSelection.style.display = 'none';
+                gameArea.style.display = 'flex';
+                completedScreen.style.display = 'none';
+                
+                // Start first mission
+                currentMission = 0;
+                updateMission();
+                commandInput.focus();
             }
-        }
-        
-        // Run on load and before print
-        window.addEventListener('load', adjustForPrint);
-        window.addEventListener('beforeprint', adjustForPrint);
-        
-        // Reset after printing
-        window.addEventListener('afterprint', function() {
-            document.body.style.fontSize = '';
+            
+            function executeCommand() {
+                const command = commandInput.value.trim();
+                commandInput.value = '';
+                
+                if (!command) return;
+                
+                // Add command to terminal output
+                terminalOutput.innerHTML += `\n<span class="prompt">></span> ${command}\n`;
+                
+                // Process command
+                if (command.toLowerCase() === 'help') {
+                    showHelp();
+                } else if (command.toLowerCase() === 'clear') {
+                    terminalOutput.innerHTML = '';
+                } else if (command === missions[currentMission].solution) {
+                    completeMission();
+                } else if (command.startsWith(currentTool === 'nmap' ? 'nmap' : 'tshark')) {
+                    terminalOutput.innerHTML += `\n<span class="error-message">> ERROR: COMMAND EXECUTED BUT DIDN'T COMPLETE THE MISSION. TRY AGAIN OR CLICK 'REQUEST HINT'.</span>\n`;
+                } else {
+                    terminalOutput.innerHTML += `\n<span class="error-message">> ERROR: UNKNOWN COMMAND. TYPE 'HELP' FOR AVAILABLE COMMANDS.</span>\n`;
+                }
+                
+                // Scroll to bottom of terminal
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            }
+            
+            function showHelp() {
+                terminalOutput.innerHTML += `
+> AVAILABLE COMMANDS:
+> HELP: SHOW THIS HELP MESSAGE
+> CLEAR: CLEAR THE TERMINAL
+> ${currentTool === 'nmap' ? 'NMAP [OPTIONS] [TARGET]' : 'TSHARK [OPTIONS]'}: EXECUTE ${toolsData[currentTool].name} COMMANDS
+
+> CURRENT MISSION: ${missions[currentMission].title}
+`;
+            }
+            
+            function showHint() {
+                missionHint.style.display = "block";
+                terminalOutput.innerHTML += `\n<span class="info-message">> HINT DISPLAYED ABOVE MISSION DESCRIPTION.</span>\n`;
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            }
+            
+            function completeMission() {
+                terminalOutput.innerHTML += `\n${missions[currentMission].output}\n\n<span class="success-message">${missions[currentMission].successMessage}</span>\n`;
+                xp += missions[currentMission].xp;
+                completedMissions++;
+                
+                // Update progress
+                const progressPercent = (completedMissions / totalMissions) * 100;
+                progressBar.style.width = `${progressPercent}%`;
+                progressText.textContent = `PROGRESS: ${completedMissions}/${totalMissions} MISSIONS COMPLETED`;
+                xpGained.textContent = `XP: ${xp}`;
+                
+                // Move to next mission or complete game
+                if (currentMission < missions.length - 1) {
+                    currentMission++;
+                    updateMission();
+                } else {
+                    completeTraining();
+                }
+                
+                // Scroll to bottom of terminal
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            }
+            
+            function skipMission() {
+                terminalOutput.innerHTML += `\n<span class="warning-message">> MISSION SKIPPED. YOU DIDN'T EARN XP FOR THIS ONE.</span>\n`;
+                
+                if (currentMission < missions.length - 1) {
+                    currentMission++;
+                    updateMission();
+                } else {
+                    completeTraining();
+                }
+                
+                // Scroll to bottom of terminal
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            }
+            
+            function updateMission() {
+                missionTitle.textContent = missions[currentMission].title;
+                missionDescription.textContent = missions[currentMission].description;
+                missionHint.textContent = missions[currentMission].hint;
+                missionHint.style.display = "none";
+                
+                // Clear terminal and show mission start message
+                terminalOutput.innerHTML = `> STARTING ${missions[currentMission].title}...\n> TYPE THE CORRECT COMMAND TO COMPLETE THE MISSION.\n> TYPE 'HELP' FOR AVAILABLE COMMANDS.`;
+            }
+            
+            function completeTraining() {
+                gameArea.style.display = 'none';
+                completedScreen.style.display = 'block';
+                totalXp.textContent = xp;
+                
+                completedMessage.innerHTML = `
+                    > CONGRATULATIONS! YOU'VE COMPLETED ALL ${toolsData[currentTool].name} MISSIONS AND EARNED <strong>${xp} XP</strong>.
+                    > YOU'RE NOW READY TO USE ${toolsData[currentTool].name} IN REAL-WORLD SCENARIOS!
+                    ${currentTool === 'nmap' ? '> NETWORK SCANNING MASTER!' : '> PACKET ANALYSIS PRO!'}
+                `;
+            }
+            
+            function backToTools() {
+                resetGame();
+                toolSelection.style.display = 'block';
+                gameArea.style.display = 'none';
+                completedScreen.style.display = 'none';
+            }
+            
+            function replayMissions() {
+                resetGame();
+                gameArea.style.display = 'flex';
+                completedScreen.style.display = 'none';
+                currentMission = 0;
+                updateMission();
+                commandInput.focus();
+            }
+            
+            function resetGame() {
+                currentMission = 0;
+                completedMissions = 0;
+                xp = 0;
+                progressBar.style.width = '0%';
+                progressText.textContent = `PROGRESS: 0/${totalMissions} MISSIONS COMPLETED`;
+                xpGained.textContent = `XP: 0`;
+                terminalOutput.innerHTML = `> WELCOME TO CYBER TERMINAL DOJO\n> TYPE 'HELP' FOR AVAILABLE COMMANDS\n> MISSION INITIALIZED...`;
+            }
+            
+            function showHelpModal() {
+                helpModal.style.display = "flex";
+            }
+            
+            function hideHelpModal() {
+                helpModal.style.display = "none";
+            }
         });
     </script>
 </body>
